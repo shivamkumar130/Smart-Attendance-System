@@ -4,12 +4,6 @@
 
 A comprehensive full-stack solution for automated student attendance tracking using facial recognition technology, with real-time analytics and comprehensive reporting capabilities.
 
-![Project Version](https://img.shields.io/badge/version-1.0.0-blue)
-![License](https://img.shields.io/badge/license-ISC-green)
-![Flutter](https://img.shields.io/badge/Flutter-3.12.1-blue)
-![Node.js](https://img.shields.io/badge/Node.js-16+-green)
-![Python](https://img.shields.io/badge/Python-3.8+-blue)
-![MongoDB](https://img.shields.io/badge/MongoDB-4.4+-green)
 
 ## 🌟 Features
 
@@ -422,5 +416,6 @@ For issues, questions, or feature requests, please open an issue in the reposito
 **Status**: Production Ready ✅  
 **Maintenance**: Active  
 **Next Release**: TBD
-#   S m a r t - A t t e n d a n c e - S y s t e m  
+#   S m a r t - A t t e n d a n c e - S y s t e m 
+ 
  
