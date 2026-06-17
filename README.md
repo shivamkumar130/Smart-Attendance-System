@@ -1,506 +1,429 @@
-# AI Service - Face Recognition Engine
+# 🎓 Smart Attendance System
 
-**FastAPI-based Face Recognition and Enrollment Service**
+**AI-Powered Face Recognition Attendance Management System**
 
-Python service providing face detection, recognition, and embedding generation using InsightFace technology for the Smart Attendance System.
+A comprehensive full-stack solution for automated student attendance tracking using facial recognition technology, with real-time analytics and comprehensive reporting capabilities.
 
-## 📋 Overview
+## 🌟 Features
 
-The AI Service handles:
+✅ **AI-Powered Face Recognition** - InsightFace-based facial recognition  
+✅ **Real-time Attendance** - Mark attendance with live camera capture  
+✅ **Multi-level Analytics** - Daily, Monthly, and Yearly reports  
+✅ **Interactive Dashboard** - Pie charts and attendance visualizations  
+✅ **PDF Exports** - Generate detailed attendance reports  
+✅ **Department/Semester Filtering** - Organized student management  
+✅ **Mobile-First** - Responsive Flutter UI for all devices  
+✅ **Secure APIs** - JWT authentication and CORS protection
 
-- Face detection and liveness verification
-- Face embedding generation (enrollment)
-- Face recognition and matching (attendance)
-- Confidence scoring for face matches
-- Image processing and validation
+## 🏗️ System Architecture
+
+```
+┌────────────────────────────────────────────────┐
+│         Flutter Mobile Application              │
+│  (Dashboard, Reports, Student Management)      │
+└─────────────────────┬──────────────────────────┘
+                      │ HTTP/REST API
+┌─────────────────────▼──────────────────────────┐
+│     Node.js Express Backend (Port 5000)         │
+│  (Student CRUD, Attendance Tracking, Analytics)│
+└────────────┬──────────────────────────┬────────┘
+             │                          │
+      ┌──────▼──────┐          ┌────────▼────────┐
+      │   MongoDB   │          │  Python FastAPI │
+      │  (Database) │          │  (Port 8000)    │
+      └─────────────┘          │  AI Recognition │
+                               └─────────────────┘
+```
+
+## 📦 Project Structure
+
+```
+smart-attendance-system/
+│
+├── frontend/
+│   └── mobile_app/                    # Flutter mobile application
+│       ├── lib/
+│       │   ├── screens/               # UI Screens (8 screens)
+│       │   ├── services/              # API & Face Recognition services
+│       │   ├── models/                # Data models
+│       │   ├── widgets/               # Reusable components
+│       │   └── utils/                 # PDF generation & helpers
+│       ├── android/                   # Android native code
+│       ├── ios/                       # iOS native code
+│       └── pubspec.yaml               # Flutter dependencies
+│
+├── backend/                           # Node.js Express API
+│   ├── server.js                      # Entry point
+│   ├── controllers/                   # Business logic
+│   ├── models/                        # MongoDB schemas
+│   ├── routes/                        # API endpoints
+│   ├── middleware/                    # Upload handling
+│   └── package.json                   # Node dependencies
+│
+├── ai-service/                        # Python FastAPI
+│   ├── app.py                         # FastAPI app
+│   ├── services/                      # Face recognition logic
+│   ├── face_detection/                # Detection models
+│   ├── face_recognition/              # Recognition models
+│   └── requirements.txt               # Python dependencies
+│
+└── docker/                            # Docker configuration
+
+```
 
 ## 🛠️ Tech Stack
 
-- **FastAPI** - Modern async Python web framework
-- **InsightFace** - State-of-the-art face recognition
-- **OpenCV** - Image processing
+### Frontend
+
+- **Flutter** 3.12.1 - Cross-platform mobile UI
+- **Dart** - Programming language
+- **fl_chart** - Data visualization (pie charts)
+- **http** - REST API client
+- **image_picker** - Camera/gallery integration
+- **pdf + printing** - Report generation & export
+- **intl** - Date formatting (standardized: dd MMM yyyy, hh:mm a)
+
+### Backend
+
+- **Node.js** - Runtime environment
+- **Express.js** 5.2.1 - Web framework
+- **Mongoose** 9.6.3 - MongoDB ODM
+- **JWT** - Authentication
+- **Multer** - File upload handling
+- **CORS** - Cross-origin requests
+- **Nodemon** - Development server
+
+### AI Service
+
+- **FastAPI** - Modern Python web framework
+- **InsightFace** - Face detection & recognition
 - **NumPy** - Numerical computations
+- **OpenCV** - Image processing
 - **SciPy** - Scientific computing
-- **Pillow** - Image handling
-- **Uvicorn** - ASGI server
 
-## 📁 Project Structure
+### Database
 
-```
-ai-service/
-├── app.py                      # FastAPI application
-├── services/
-│   ├── face_service.py         # Face detection & embedding
-│   └── recognition_service.py  # Face matching algorithm
-├── face_detection/             # Detection models
-│   └── detection_models/
-├── face_recognition/           # Recognition models
-│   └── recognition_models/
-├── liveness_detection/         # Liveness detection models
-│   └── liveness_models/
-├── embeddings/                 # Stored face embeddings
-├── requirements.txt            # Python dependencies
-└── README.md                   # This file
-```
+- **MongoDB** 4.4+ - Document database
+- Collections: Students, Attendance
 
-## 🚀 Getting Started
+## 🚀 Quick Start
+
+### Prerequisites
+
+- **Flutter SDK**: ^3.12.1
+- **Node.js**: ^16.0
+- **Python**: ^3.8
+- **MongoDB**: 4.4+
+- **Android Studio** or **Xcode** (for mobile dev)
 
 ### Installation
 
+#### 1. Clone Repository
+
 ```bash
-# Create virtual environment
-python -m venv venv
+git clone <repository-url>
+cd smart-attendance-system
+```
 
-# Activate virtual environment
-# Windows
-venv\Scripts\activate
-# Linux/Mac
-source venv/bin/activate
+#### 2. Backend Setup
 
-# Install dependencies
+```bash
+cd backend
+npm install
+
+# Create .env file
+echo "MONGO_URI=mongodb://localhost:27017/attendance_system" > .env
+echo "PORT=5000" >> .env
+echo "JWT_SECRET=your_secret_key" >> .env
+
+npm run dev
+```
+
+#### 3. AI Service Setup
+
+```bash
+cd ai-service
 pip install -r requirements.txt
-
-# Run the service
 python app.py
 ```
 
-### Requirements
+#### 4. Frontend Setup
 
+```bash
+cd frontend/mobile_app
+flutter pub get
+flutter run
 ```
-fastapi==0.104.1
-uvicorn==0.24.0
-insightface==0.7.3
-opencv-python==4.8.1.78
-numpy==1.24.3
-pillow==10.0.1
-scipy==1.11.4
-scikit-image==0.21.0
-pydantic==2.4.2
-python-multipart==0.0.6
-```
-
-### Environment Setup
-
-No special environment variables required. The service uses:
-
-- Local model files in `face_detection/`, `face_recognition/`, `liveness_detection/`
-- Embeddings stored in `embeddings/` directory
 
 ## 📡 API Endpoints
 
-### Base URL
-
-```
-http://localhost:8000
-```
-
-### Health Check
-
-#### Service Status
-
-```http
-GET /
-```
-
-**Response:**
-
-```json
-{
-  "message": "AI Service Running"
-}
-```
-
-#### Health Endpoint
-
-```http
-GET /health
-```
-
-**Response:**
-
-```json
-{
-  "status": "success"
-}
-```
-
-### Face Enrollment
-
-#### Enroll Face (Generate Embedding)
-
-```http
-POST /enroll-face
-Content-Type: application/json
-
-{
-  "image_path": "/path/to/student/image.jpg"
-}
-```
-
-**Response (Success):**
-
-```json
-{
-  "success": true,
-  "embedding_length": 512,
-  "embedding": [0.1234, -0.5678, 0.9012, ...]
-}
-```
-
-**Response (No Face Detected):**
-
-```json
-{
-  "success": false,
-  "message": "No face detected"
-}
-```
-
-### Face Recognition
-
-#### Recognize Face (Match Against Students)
-
-```http
-POST /recognize-face
-Content-Type: application/json
-
-{
-  "image_path": "/path/to/capture.jpg",
-  "students": [
-    {
-      "_id": "507f1f77bcf86cd799439011",
-      "name": "John Doe",
-      "rollNumber": "CS001",
-      "faceEmbedding": [0.1234, -0.5678, 0.9012, ...]
-    },
-    {
-      "_id": "507f1f77bcf86cd799439012",
-      "name": "Jane Smith",
-      "rollNumber": "CS002",
-      "faceEmbedding": [0.2345, -0.6789, 0.0123, ...]
-    }
-  ]
-}
-```
-
-**Response (Match Found):**
-
-```json
-{
-  "success": true,
-  "recognized_student": {
-    "id": "507f1f77bcf86cd799439011",
-    "name": "John Doe"
-  },
-  "confidence": 0.9876
-}
-```
-
-**Response (No Match):**
-
-```json
-{
-  "success": false,
-  "message": "No matching student found"
-}
-```
-
-**Response (No Face):**
-
-```json
-{
-  "success": false,
-  "message": "No face detected"
-}
-```
-
-## 🔍 Core Functions
-
-### Face Service (`face_service.py`)
-
-```python
-def get_face_embedding(image_path: str) -> Optional[List[float]]
-```
-
-- **Input**: Path to image file
-- **Output**: Face embedding vector (512 dimensions) or None
-- **Process**:
-  1. Load image using OpenCV
-  2. Detect face using InsightFace detection model
-  3. Align face
-  4. Generate embedding using recognition model
-  5. Return normalized embedding
-
-### Recognition Service (`recognition_service.py`)
-
-```python
-def find_best_match(embedding: List[float], students: List[Dict]) -> Tuple[Optional[Dict], float]
-```
-
-- **Input**: Query embedding and list of student records
-- **Output**: Matched student and confidence score
-- **Process**:
-  1. Calculate similarity between query embedding and all student embeddings
-  2. Use cosine similarity distance
-  3. Find maximum similarity (best match)
-  4. Return matched student and confidence score (0-1)
-
-## 🤖 Algorithm Details
-
-### Face Detection
-
-- **Model**: InsightFace RetinaFace
-- **Precision**: Detects faces with high accuracy
-- **Output**: Bounding box coordinates and face alignment
-
-### Face Alignment
-
-- Ensures consistent face orientation
-- Critical for embedding quality
-- Handles rotation, scale, and perspective
-
-### Face Embedding
-
-- **Model**: InsightFace ArcFace
-- **Dimension**: 512-dimensional vector
-- **Method**: Deep learning neural network
-- **Normalized**: L2 normalization for distance comparison
-
-### Face Matching
-
-- **Similarity Metric**: Cosine similarity
-- **Formula**: cos(A, B) = (A · B) / (||A|| ||B||)
-- **Range**: 0 to 1 (1 = perfect match)
-- **Threshold**: Configurable based on requirements
-
-## 📊 Performance Characteristics
-
-| Metric               | Value                 |
-| -------------------- | --------------------- |
-| Embedding Generation | ~100-200ms            |
-| Face Recognition     | ~50-100ms per student |
-| Accuracy Rate        | 99%+                  |
-| Model Size           | ~50-100MB             |
-| Memory Usage         | ~200-300MB            |
-
-## 🔐 Security & Validation
-
-1. **Input Validation**
-   - Image path existence check
-   - File format validation
-   - Image size limits
-
-2. **Error Handling**
-   - Graceful handling of missing faces
-   - File not found handling
-   - Invalid image format handling
-
-3. **Data Privacy**
-   - Embeddings are encrypted in transit
-   - Face images not stored on server
-   - Only numeric embeddings persisted
-
-## 🚀 Running the Service
-
-### Development Mode
-
-```bash
-python app.py
-# Service runs at http://localhost:8000
-```
-
-### Production Mode
-
-```bash
-uvicorn app:app --host 0.0.0.0 --port 8000 --workers 4
-```
-
-### With Auto-Reload
-
-```bash
-python -m uvicorn app:app --reload --port 8000
-```
-
-### Access API Documentation
-
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
-
-## 🧪 Testing with cURL
-
-### Test Health
-
-```bash
-curl http://localhost:8000/health
-```
-
-### Test Face Enrollment
-
-```bash
-curl -X POST http://localhost:8000/enroll-face \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image_path": "/path/to/student.jpg"
-  }'
-```
-
-### Test Face Recognition
-
-```bash
-curl -X POST http://localhost:8000/recognize-face \
-  -H "Content-Type: application/json" \
-  -d '{
-    "image_path": "/path/to/capture.jpg",
-    "students": [
-      {
-        "_id": "507f1f77bcf86cd799439011",
-        "name": "John Doe",
-        "faceEmbedding": [0.1234, -0.5678, ...]
-      }
-    ]
-  }'
-```
-
-## 📈 Model Information
-
-### Detection Model (RetinaFace)
-
-- Multi-task learning framework
-- Detects small and large faces
-- Outputs: Face box, landmarks, confidence
-
-### Recognition Model (ArcFace)
-
-- Additive Angular Margin loss
-- 512-dimensional embeddings
-- State-of-the-art accuracy
-
-### Alignment
-
-- 5-point landmark detection
-- Perspective transform
-- Standardized output size: 112x112
-
-## 🔄 Integration with Backend
-
-### Enrollment Workflow
-
-```
-1. User uploads student photo
-2. Backend calls POST /enroll-face
-3. AI Service returns embedding
-4. Backend stores embedding in MongoDB
-```
-
-### Attendance Workflow
-
-```
-1. User captures attendance photo
-2. Backend calls POST /recognize-face with all students
-3. AI Service finds best match
-4. Backend marks attendance with confidence score
-```
-
-## 🐛 Common Issues & Solutions
-
-| Issue                 | Cause                    | Solution                    |
-| --------------------- | ------------------------ | --------------------------- |
-| Models not found      | Missing model files      | Download InsightFace models |
-| Out of memory         | Large batch size         | Reduce students per request |
-| Face not detected     | Poor image quality       | Ensure clear face in image  |
-| Low confidence scores | Different lighting/angle | Use similar conditions      |
-| Slow performance      | CPU only                 | Use GPU if available        |
-
-## ⚡ Performance Optimization Tips
-
-1. **Batch Processing**
-   - Process multiple students efficiently
-   - Limit batch size to available memory
-
-2. **Caching**
-   - Cache model in memory for multiple requests
-   - Reuse embeddings instead of recalculating
-
-3. **GPU Acceleration**
-   - Install CUDA-compatible PyTorch
-   - Significant speed improvement (2-5x)
-
-4. **Image Preprocessing**
-   - Resize images before processing
-   - Optimal size: 224x224 minimum
-
-## 📚 Research & References
-
-- **InsightFace**: https://github.com/deepinsight/insightface
-- **ArcFace Paper**: Additive Angular Margin Loss
-- **RetinaFace**: Single-stage Dense Face Localization
-- **Face Recognition**: Deep Learning in Face Detection
-
-## 🔗 Integration Examples
-
-### With Node.js Backend
+### Students (`/api/students`)
+
+| Method | Endpoint           | Description                           |
+| ------ | ------------------ | ------------------------------------- |
+| GET    | `/`                | Get all students                      |
+| GET    | `/:id`             | Get student by ID                     |
+| POST   | `/register`        | Register a new student                |
+| PUT    | `/:id`             | Update student details                |
+| DELETE | `/:id`             | Delete student and attendance records |
+| POST   | `/upload-face/:id` | Upload student face image             |
+| POST   | `/enroll-face/:id` | Enroll student face embedding         |
+| GET    | `/report/:id`      | Get student attendance report         |
+
+### Attendance (`/api/attendance`)
+
+| Method | Endpoint          | Description                        |
+| ------ | ----------------- | ---------------------------------- |
+| POST   | `/mark`           | Mark attendance manually           |
+| POST   | `/recognize`      | Recognize face and mark attendance |
+| POST   | `/recognize-live` | Recognize live image upload        |
+| GET    | `/`               | Get all attendance records         |
+| GET    | `/student/:id`    | Get attendance by student          |
+| DELETE | `/:id`            | Delete attendance record           |
+| GET    | `/report`         | Get today's attendance report      |
+| GET    | `/summary`        | Get student attendance summary     |
+| GET    | `/analytics`      | Get attendance analytics           |
+| GET    | `/recent`         | Get recent attendance records      |
+| GET    | `/date/:date`     | Get attendance by date             |
+| GET    | `/monthly-report` | Get filtered monthly report        |
+
+### AI Service (`http://localhost:8000`)
+
+| Method | Endpoint          | Description                    |
+| ------ | ----------------- | ------------------------------ |
+| GET    | `/`               | Service status                 |
+| GET    | `/health`         | Health check                   |
+| POST   | `/enroll-face`    | Generate face embedding        |
+| POST   | `/recognize-face` | Recognize a face from an image |
+
+## 📊 Database Schema
+
+### Student
 
 ```javascript
-const axios = require("axios");
-
-const enrollFace = async (imagePath) => {
-  const response = await axios.post("http://localhost:8000/enroll-face", {
-    image_path: imagePath,
-  });
-  return response.data.embedding;
-};
-```
-
-### With Flutter Frontend
-
-```dart
-final response = await http.post(
-  Uri.parse('http://192.168.x.x:8000/recognize-face'),
-  headers: {'Content-Type': 'application/json'},
-  body: jsonEncode({
-    'image_path': imagePath,
-    'students': studentsList,
-  }),
-);
-```
-
-## 📝 API Response Codes
-
-| Code | Meaning          |
-| ---- | ---------------- |
-| 200  | Success          |
-| 400  | Bad Request      |
-| 404  | Not Found        |
-| 422  | Validation Error |
-| 500  | Server Error     |
-
-## 🚨 Error Handling
-
-All errors follow standard format:
-
-```json
 {
-  "detail": "Error description"
+  _id: ObjectId,
+  name: String,
+  rollNumber: String (unique),
+  email: String (optional, unique if provided),
+  department: String,
+  semester: String,
+  profileImage: String,
+  faceEmbedding: [Number], // Face vector
+  createdAt: Date,
+  updatedAt: Date
 }
 ```
 
-## 🤝 Contributing
+### Attendance
 
-1. Test thoroughly before submitting
-2. Document new models/features
-3. Update requirements.txt if adding dependencies
-4. Follow PEP 8 coding standards
+```javascript
+{
+  _id: ObjectId,
+  studentId: ObjectId,
+  date: Date,
+  status: String ("Present" | "Absent"),
+  confidence: Number (0-1),
+  faceEmbedding: [Number],
+  recordedAt: Date,
+  createdAt: Date
+}
+```
+
+## 🎯 Main Screens
+
+1. **Dashboard Screen** - Overview with recent attendance
+2. **Students Screen** - Student list with management
+3. **Mark Attendance** - Face recognition camera
+4. **Attendance History** - Records by date with search
+5. **Reports Screen** - Daily/Monthly/Yearly analytics with pie charts
+6. **Monthly Report** - Department/Semester filtered report
+7. **Student Details** - Individual student analytics
+8. **Add Student** - New student registration
+
+## 📊 Analytics Features
+
+### Dashboard Reports
+
+- **Daily View**: Today's attendance
+- **Monthly View**: Current month statistics
+- **Yearly View**: Annual attendance
+- **Visualization**: Pie charts (Present vs Absent)
+- **Metrics**: Count, percentage, confidence scores
+- **Export**: PDF with formatted data
+
+### Monthly Reports
+
+- Department filtering
+- Semester/Class filtering
+- Student-wise attendance days
+- Summary statistics
+- PDF export with metadata
+
+## 🔄 Workflow
+
+```
+1. Student Registration
+   └─ Capture face photo → AI generates embedding → Store in DB
+
+2. Attendance Marking
+   └─ Capture image → AI recognizes face → Mark attendance → Update DB
+
+3. Analytics
+   └─ Fetch records → Filter by range → Calculate stats → Generate PDF
+```
+
+## 📝 Configuration
+
+### Backend `.env`
+
+```env
+MONGO_URI=mongodb://localhost:27017/attendance_system
+PORT=5000
+JWT_SECRET=your_secure_key_here
+```
+
+### Frontend API URL
+
+Update in `lib/services/api_service.dart`:
+
+```dart
+static const String baseUrl = "http://192.168.x.x:5000";
+```
+
+## 🚀 Running the Application
+
+**Terminal 1 - Backend**
+
+```bash
+cd backend
+npm run dev
+# Server on http://localhost:5000
+```
+
+**Terminal 2 - AI Service**
+
+```bash
+cd ai-service
+python app.py
+# Service on http://localhost:8000
+```
+
+**Terminal 3 - Mobile App**
+
+```bash
+cd frontend/mobile_app
+flutter run
+# App on connected device/emulator
+```
+
+**Database**
+
+```bash
+# Ensure MongoDB is running
+mongod
+```
+
+## 📱 Build for Production
+
+### Android APK
+
+```bash
+cd frontend/mobile_app
+flutter build apk --release
+# Output: build/app/outputs/flutter-apk/app-release.apk
+```
+
+### iOS App
+
+```bash
+cd frontend/mobile_app
+flutter build ios --release
+```
+
+## 🐛 Troubleshooting
+
+| Issue                     | Solution                                                   |
+| ------------------------- | ---------------------------------------------------------- |
+| MongoDB connection failed | Verify MongoDB is running, check MONGO_URI                 |
+| API calls timeout         | Check backend server (port 5000), update IP address        |
+| Face recognition fails    | Ensure AI service (port 8000) is running, clear image path |
+| Flutter build errors      | Run `flutter clean && flutter pub get`                     |
+| Student email conflicts   | Email is optional; skip if not needed                      |
+
+## 🔐 Security
+
+- JWT-based authentication
+- Optional email validation (null-safe with sparse indexes)
+- File upload validation (Multer)
+- CORS protection
+- Environment variables for sensitive data
+- Password hashing with bcryptjs
+
+## 📈 Performance
+
+- Optimized MongoDB aggregation pipelines
+- Async/await for non-blocking operations
+- Efficient face embedding comparison
+- PDF generation with streaming
+- Lazy loading of attendance records
+
+## ✅ Quality Assurance
+
+- Date format standardization: **dd MMM yyyy, hh:mm a**
+- Consistent API response format
+- Error handling across all layers
+- Input validation on frontend & backend
+- Timezone-aware date handling
+
+## 📚 Documentation
+
+- **Frontend**: [frontend/mobile_app/README.md](frontend/mobile_app/README.md)
+- **Backend**: See API Endpoints section
+- **AI Service**: API documentation in comments
+
+## 👨‍💻 Development
+
+### Code Standards
+
+- Consistent date formatting across all screens
+- RESTful API design principles
+- Clean architecture separation of concerns
+- DRY (Don't Repeat Yourself) principle
+
+### Git Workflow
+
+```bash
+git checkout -b feature/your-feature
+git commit -m "Add your feature"
+git push origin feature/your-feature
+```
 
 ## 📄 License
 
-ISC License - See main project LICENSE file
+This project is licensed under the **ISC License**. See LICENSE file for details.
 
-## 👨‍💻 Author
+## 👥 Author
 
 **Shivam Kumar**  
-AI Service Version: 1.0.0  
+Version: 1.0.0  
 Last Updated: June 2026
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📞 Support
+
+For issues, questions, or feature requests, please open an issue in the repository.
 
 ---
 
-**Status**: Production Ready ✅
+**Status**: Production Ready ✅  
+**Maintenance**: Active  
+**Next Release**: TBD
+
